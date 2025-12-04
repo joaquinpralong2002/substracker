@@ -105,3 +105,7 @@ Backlog (Ideas)
 - **Diseño:** **Figma**.
 - **Control de Versiones:** **Git/GitHub**.
 - **Despliegue:** **Vercel**.
+
+## Estructura de carpetas
+
+- Basada en Features.
