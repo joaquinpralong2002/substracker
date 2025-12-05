@@ -13,7 +13,6 @@ datasource db {
   provider = "postgresql"
 }
 
-// Modelo basado en la pantalla "Crea tu cuenta"
 model User {
   id            String   @id @default(uuid())
   name          String   // Campo: "Nombre completo"
@@ -27,11 +26,10 @@ model User {
   subscriptions Subscription[] 
 }
 
-// Modelo basado en las pantallas "Añadir una suscripción" (Pasos 1 y 2)
 model Subscription {
   id           String   @id @default(uuid())
   
-  // Datos principales (Paso 1 y 2 del diseño)
+  // Datos principales 
   name         String   // Campo: "Nombre de la suscripción" (ej. Netflix)
   price        Decimal  @db.Decimal(10, 2) // Campo: "Precio" (ej. 14.99)
   currency     String   // Campo: "Divisa" (ej. USD, EUR - viene del dropdown)
@@ -39,11 +37,11 @@ model Subscription {
   startDate    DateTime // Campo: "Fecha de primer pago"
   
   // Datos opcionales y lógica
-  notes        String?  // Campo: "Notas adicionales" (El ? lo hace opcional)
+  notes        String?  // Campo: "Notas adicionales"
   isActive     Boolean  @default(true) // Para "Soft Delete" (cuando el usuario elimine)
   
   // Campos técnicos (No visibles en UI, pero necesarios)
-  reminderDays Int      @default(3) // HU-12: Días previos para notificar (Por defecto 3)
+  reminderDays Int      @default(7) // HU-12: Días previos para notificar (Por defecto 7)
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
