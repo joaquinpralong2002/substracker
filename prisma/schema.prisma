@@ -31,6 +31,7 @@ model Subscription {
   currency     Currency @default(USD)  // Campo: "Divisa" (ej. USD, EUR - viene del dropdown)
   billingCycle BillingCycle @default(Mensual)  // Campo: "Ciclo de facturación" (ej. Mensual - viene del dropdown)
   startDate    DateTime // Campo: "Fecha de primer pago"
+  nextPaymentDate DateTime // Campo: "Fecha de próximo pago"
   
   // Datos opcionales y lógica
   notes        String?  // Campo: "Notas adicionales"
@@ -45,7 +46,8 @@ model Subscription {
   userId       String
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@index([startDate])
+  @@index([userId])
+  @@index([nextPaymentDate])
   @@map("subscriptions")
 }
 
