@@ -109,3 +109,7 @@ Backlog (Ideas)
 ## Estructura de carpetas
 
 - Basada en Features.
+
+## API
+
+Utilizaremos Server Actions para las escrituras (POST/PUT/DELETE) y Server Components para las lecturas (GET).
