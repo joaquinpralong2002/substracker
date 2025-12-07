@@ -13,8 +13,8 @@ model User {
   email         String   @unique // Campo: "Correo electrónico"
   password      String   // Campo: "Contraseña" (Se guardará hasheada)
   
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
   
   // Relación: Un usuario tiene muchas suscripciones
   subscriptions Subscription[] 
@@ -29,21 +29,21 @@ model Subscription {
   name         String   // Campo: "Nombre de la suscripción" (ej. Netflix)
   price        Decimal  @db.Decimal(10, 2) // Campo: "Precio" (ej. 14.99)
   currency     Currency @default(USD)  // Campo: "Divisa" (ej. USD, EUR - viene del dropdown)
-  billingCycle BillingCycle @default(Mensual)  // Campo: "Ciclo de facturación" (ej. Mensual - viene del dropdown)
-  startDate    DateTime // Campo: "Fecha de primer pago"
-  nextPaymentDate DateTime // Campo: "Fecha de próximo pago"
+  billingCycle BillingCycle @default(Mensual) @map("billing_cycle")  // Campo: "Ciclo de facturación" (ej. Mensual - viene del dropdown)
+  startDate    DateTime @map("start_date") // Campo: "Fecha de primer pago" 
+  nextPaymentDate DateTime @map("next_payment_date") // Campo: "Fecha de próximo pago"
   
   // Datos opcionales y lógica
   notes        String?  // Campo: "Notas adicionales"
-  isActive     Boolean  @default(true) // Para "Soft Delete" (cuando el usuario elimine)
+  isActive     Boolean  @default(true) @map("is_active") // Para "Soft Delete" (cuando el usuario elimine)
   
   // Campos técnicos (No visibles en UI, pero necesarios)
-  reminderDays Int      @default(7) // HU-12: Días previos para notificar (Por defecto 7)
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  reminderDays Int      @default(7) @map("reminder_days") // HU-12: Días previos para notificar (Por defecto 7)
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
 
   // Relación con Usuario (Foreign Key)
-  userId       String
+  userId       String   @map("user_id")
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
