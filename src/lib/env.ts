@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { flattenError, z } from "zod";
 
 const envSchema = z.object({
   DATABASE_URL: z.string().min(1, "DATABASE_URL es requerido"),
@@ -11,10 +11,8 @@ const envSchema = z.object({
 const _env = envSchema.safeParse(process.env);
 
 if (!_env.success) {
-  console.error(
-    "❌ Variables de entorno inválidas:",
-    JSON.stringify(_env.error.format(), null, 2)
-  );
+  const flattened = flattenError(_env.error);
+  console.error("Variables de entorno inválidas:", flattened.fieldErrors);
   throw new Error("Variables de entorno inválidas");
 }
 
