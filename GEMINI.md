@@ -18,13 +18,14 @@ Para detalles completos sobre los requisitos funcionales, historias de usuario, 
 - **Lenguaje:** TypeScript
 - **Estilos:** Tailwind CSS v4
 - **Iconos:** Lucide React
-
-### Planificado (No implementado aún)
-
 - **Base de Datos:** PostgreSQL
 - **ORM:** Prisma
 - **Validación:** Zod
-- **Autenticación:** JWT, Bcryptjs
+- **Autenticación:** JWT (usando `jose`), `bcryptjs`
+
+### Planificado (Pendiente)
+
+- (Lista vacía por el momento)
 
 ## Convenciones de Desarrollo
 
@@ -32,6 +33,7 @@ Para detalles completos sobre los requisitos funcionales, historias de usuario, 
 - **Idioma de Documentación/Comentarios:** Español.
 - **Estilos:** Utilizar clases de utilidad de Tailwind CSS.
 - **Estructura de Directorios:** `src/app` (App Router de Next.js).
+- **Editor Preferido:** Antigravity.
 
 ## Comandos Principales
 
@@ -43,6 +45,8 @@ Para detalles completos sobre los requisitos funcionales, historias de usuario, 
 | **Linting**      | `npm run lint`  | Ejecuta ESLint para verificar la calidad del código.      |
 
 ## Paleta de Colores (Referencia)
+
+Definida en `src/app/globals.css` usando variables CSS en el selector `body`.
 
 - **Dark Blue:** `#114B5F`
 - **Primary Green:** `#1A936F`
