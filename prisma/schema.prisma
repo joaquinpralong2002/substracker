@@ -1,13 +1,13 @@
 generator client {
   provider = "prisma-client"
-  output   = "../generated/prisma"
+  output   = "../src/generated/prisma"
 }
 
 datasource db {
   provider = "postgresql"
 }
 
-model User {
+model AppUser {
   id            String   @id @default(cuid())
   name          String   // Campo: "Nombre completo"
   email         String   @unique // Campo: "Correo electrónico"
@@ -44,7 +44,7 @@ model Subscription {
 
   // Relación con Usuario (Foreign Key)
   userId       String   @map("user_id")
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user         AppUser  @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
   @@index([nextPaymentDate])

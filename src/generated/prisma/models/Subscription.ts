@@ -40,9 +40,10 @@ export type SubscriptionMinAggregateOutputType = {
   id: string | null
   name: string | null
   price: runtime.Decimal | null
-  currency: string | null
-  billingCycle: string | null
+  currency: $Enums.Currency | null
+  billingCycle: $Enums.BillingCycle | null
   startDate: Date | null
+  nextPaymentDate: Date | null
   notes: string | null
   isActive: boolean | null
   reminderDays: number | null
@@ -55,9 +56,10 @@ export type SubscriptionMaxAggregateOutputType = {
   id: string | null
   name: string | null
   price: runtime.Decimal | null
-  currency: string | null
-  billingCycle: string | null
+  currency: $Enums.Currency | null
+  billingCycle: $Enums.BillingCycle | null
   startDate: Date | null
+  nextPaymentDate: Date | null
   notes: string | null
   isActive: boolean | null
   reminderDays: number | null
@@ -73,6 +75,7 @@ export type SubscriptionCountAggregateOutputType = {
   currency: number
   billingCycle: number
   startDate: number
+  nextPaymentDate: number
   notes: number
   isActive: number
   reminderDays: number
@@ -100,6 +103,7 @@ export type SubscriptionMinAggregateInputType = {
   currency?: true
   billingCycle?: true
   startDate?: true
+  nextPaymentDate?: true
   notes?: true
   isActive?: true
   reminderDays?: true
@@ -115,6 +119,7 @@ export type SubscriptionMaxAggregateInputType = {
   currency?: true
   billingCycle?: true
   startDate?: true
+  nextPaymentDate?: true
   notes?: true
   isActive?: true
   reminderDays?: true
@@ -130,6 +135,7 @@ export type SubscriptionCountAggregateInputType = {
   currency?: true
   billingCycle?: true
   startDate?: true
+  nextPaymentDate?: true
   notes?: true
   isActive?: true
   reminderDays?: true
@@ -229,9 +235,10 @@ export type SubscriptionGroupByOutputType = {
   id: string
   name: string
   price: runtime.Decimal
-  currency: string
-  billingCycle: string
+  currency: $Enums.Currency
+  billingCycle: $Enums.BillingCycle
   startDate: Date
+  nextPaymentDate: Date
   notes: string | null
   isActive: boolean
   reminderDays: number
@@ -267,16 +274,17 @@ export type SubscriptionWhereInput = {
   id?: Prisma.StringFilter<"Subscription"> | string
   name?: Prisma.StringFilter<"Subscription"> | string
   price?: Prisma.DecimalFilter<"Subscription"> | runtime.Decimal | runtime.DecimalJsLike | number | string
-  currency?: Prisma.StringFilter<"Subscription"> | string
-  billingCycle?: Prisma.StringFilter<"Subscription"> | string
+  currency?: Prisma.EnumCurrencyFilter<"Subscription"> | $Enums.Currency
+  billingCycle?: Prisma.EnumBillingCycleFilter<"Subscription"> | $Enums.BillingCycle
   startDate?: Prisma.DateTimeFilter<"Subscription"> | Date | string
+  nextPaymentDate?: Prisma.DateTimeFilter<"Subscription"> | Date | string
   notes?: Prisma.StringNullableFilter<"Subscription"> | string | null
   isActive?: Prisma.BoolFilter<"Subscription"> | boolean
   reminderDays?: Prisma.IntFilter<"Subscription"> | number
   createdAt?: Prisma.DateTimeFilter<"Subscription"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Subscription"> | Date | string
   userId?: Prisma.StringFilter<"Subscription"> | string
-  user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  user?: Prisma.XOR<Prisma.AppUserScalarRelationFilter, Prisma.AppUserWhereInput>
 }
 
 export type SubscriptionOrderByWithRelationInput = {
@@ -286,13 +294,14 @@ export type SubscriptionOrderByWithRelationInput = {
   currency?: Prisma.SortOrder
   billingCycle?: Prisma.SortOrder
   startDate?: Prisma.SortOrder
+  nextPaymentDate?: Prisma.SortOrder
   notes?: Prisma.SortOrderInput | Prisma.SortOrder
   isActive?: Prisma.SortOrder
   reminderDays?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   userId?: Prisma.SortOrder
-  user?: Prisma.UserOrderByWithRelationInput
+  user?: Prisma.AppUserOrderByWithRelationInput
 }
 
 export type SubscriptionWhereUniqueInput = Prisma.AtLeast<{
@@ -302,16 +311,17 @@ export type SubscriptionWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.SubscriptionWhereInput | Prisma.SubscriptionWhereInput[]
   name?: Prisma.StringFilter<"Subscription"> | string
   price?: Prisma.DecimalFilter<"Subscription"> | runtime.Decimal | runtime.DecimalJsLike | number | string
-  currency?: Prisma.StringFilter<"Subscription"> | string
-  billingCycle?: Prisma.StringFilter<"Subscription"> | string
+  currency?: Prisma.EnumCurrencyFilter<"Subscription"> | $Enums.Currency
+  billingCycle?: Prisma.EnumBillingCycleFilter<"Subscription"> | $Enums.BillingCycle
   startDate?: Prisma.DateTimeFilter<"Subscription"> | Date | string
+  nextPaymentDate?: Prisma.DateTimeFilter<"Subscription"> | Date | string
   notes?: Prisma.StringNullableFilter<"Subscription"> | string | null
   isActive?: Prisma.BoolFilter<"Subscription"> | boolean
   reminderDays?: Prisma.IntFilter<"Subscription"> | number
   createdAt?: Prisma.DateTimeFilter<"Subscription"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Subscription"> | Date | string
   userId?: Prisma.StringFilter<"Subscription"> | string
-  user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  user?: Prisma.XOR<Prisma.AppUserScalarRelationFilter, Prisma.AppUserWhereInput>
 }, "id">
 
 export type SubscriptionOrderByWithAggregationInput = {
@@ -321,6 +331,7 @@ export type SubscriptionOrderByWithAggregationInput = {
   currency?: Prisma.SortOrder
   billingCycle?: Prisma.SortOrder
   startDate?: Prisma.SortOrder
+  nextPaymentDate?: Prisma.SortOrder
   notes?: Prisma.SortOrderInput | Prisma.SortOrder
   isActive?: Prisma.SortOrder
   reminderDays?: Prisma.SortOrder
@@ -341,9 +352,10 @@ export type SubscriptionScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"Subscription"> | string
   name?: Prisma.StringWithAggregatesFilter<"Subscription"> | string
   price?: Prisma.DecimalWithAggregatesFilter<"Subscription"> | runtime.Decimal | runtime.DecimalJsLike | number | string
-  currency?: Prisma.StringWithAggregatesFilter<"Subscription"> | string
-  billingCycle?: Prisma.StringWithAggregatesFilter<"Subscription"> | string
+  currency?: Prisma.EnumCurrencyWithAggregatesFilter<"Subscription"> | $Enums.Currency
+  billingCycle?: Prisma.EnumBillingCycleWithAggregatesFilter<"Subscription"> | $Enums.BillingCycle
   startDate?: Prisma.DateTimeWithAggregatesFilter<"Subscription"> | Date | string
+  nextPaymentDate?: Prisma.DateTimeWithAggregatesFilter<"Subscription"> | Date | string
   notes?: Prisma.StringNullableWithAggregatesFilter<"Subscription"> | string | null
   isActive?: Prisma.BoolWithAggregatesFilter<"Subscription"> | boolean
   reminderDays?: Prisma.IntWithAggregatesFilter<"Subscription"> | number
@@ -356,24 +368,26 @@ export type SubscriptionCreateInput = {
   id?: string
   name: string
   price: runtime.Decimal | runtime.DecimalJsLike | number | string
-  currency: string
-  billingCycle: string
+  currency?: $Enums.Currency
+  billingCycle?: $Enums.BillingCycle
   startDate: Date | string
+  nextPaymentDate: Date | string
   notes?: string | null
   isActive?: boolean
   reminderDays?: number
   createdAt?: Date | string
   updatedAt?: Date | string
-  user: Prisma.UserCreateNestedOneWithoutSubscriptionsInput
+  user: Prisma.AppUserCreateNestedOneWithoutSubscriptionsInput
 }
 
 export type SubscriptionUncheckedCreateInput = {
   id?: string
   name: string
   price: runtime.Decimal | runtime.DecimalJsLike | number | string
-  currency: string
-  billingCycle: string
+  currency?: $Enums.Currency
+  billingCycle?: $Enums.BillingCycle
   startDate: Date | string
+  nextPaymentDate: Date | string
   notes?: string | null
   isActive?: boolean
   reminderDays?: number
@@ -386,24 +400,26 @@ export type SubscriptionUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  currency?: Prisma.StringFieldUpdateOperationsInput | string
-  billingCycle?: Prisma.StringFieldUpdateOperationsInput | string
+  currency?: Prisma.EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency
+  billingCycle?: Prisma.EnumBillingCycleFieldUpdateOperationsInput | $Enums.BillingCycle
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  nextPaymentDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   reminderDays?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  user?: Prisma.UserUpdateOneRequiredWithoutSubscriptionsNestedInput
+  user?: Prisma.AppUserUpdateOneRequiredWithoutSubscriptionsNestedInput
 }
 
 export type SubscriptionUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  currency?: Prisma.StringFieldUpdateOperationsInput | string
-  billingCycle?: Prisma.StringFieldUpdateOperationsInput | string
+  currency?: Prisma.EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency
+  billingCycle?: Prisma.EnumBillingCycleFieldUpdateOperationsInput | $Enums.BillingCycle
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  nextPaymentDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   reminderDays?: Prisma.IntFieldUpdateOperationsInput | number
@@ -416,9 +432,10 @@ export type SubscriptionCreateManyInput = {
   id?: string
   name: string
   price: runtime.Decimal | runtime.DecimalJsLike | number | string
-  currency: string
-  billingCycle: string
+  currency?: $Enums.Currency
+  billingCycle?: $Enums.BillingCycle
   startDate: Date | string
+  nextPaymentDate: Date | string
   notes?: string | null
   isActive?: boolean
   reminderDays?: number
@@ -431,9 +448,10 @@ export type SubscriptionUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  currency?: Prisma.StringFieldUpdateOperationsInput | string
-  billingCycle?: Prisma.StringFieldUpdateOperationsInput | string
+  currency?: Prisma.EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency
+  billingCycle?: Prisma.EnumBillingCycleFieldUpdateOperationsInput | $Enums.BillingCycle
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  nextPaymentDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   reminderDays?: Prisma.IntFieldUpdateOperationsInput | number
@@ -445,9 +463,10 @@ export type SubscriptionUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  currency?: Prisma.StringFieldUpdateOperationsInput | string
-  billingCycle?: Prisma.StringFieldUpdateOperationsInput | string
+  currency?: Prisma.EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency
+  billingCycle?: Prisma.EnumBillingCycleFieldUpdateOperationsInput | $Enums.BillingCycle
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  nextPaymentDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   reminderDays?: Prisma.IntFieldUpdateOperationsInput | number
@@ -473,6 +492,7 @@ export type SubscriptionCountOrderByAggregateInput = {
   currency?: Prisma.SortOrder
   billingCycle?: Prisma.SortOrder
   startDate?: Prisma.SortOrder
+  nextPaymentDate?: Prisma.SortOrder
   notes?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   reminderDays?: Prisma.SortOrder
@@ -493,6 +513,7 @@ export type SubscriptionMaxOrderByAggregateInput = {
   currency?: Prisma.SortOrder
   billingCycle?: Prisma.SortOrder
   startDate?: Prisma.SortOrder
+  nextPaymentDate?: Prisma.SortOrder
   notes?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   reminderDays?: Prisma.SortOrder
@@ -508,6 +529,7 @@ export type SubscriptionMinOrderByAggregateInput = {
   currency?: Prisma.SortOrder
   billingCycle?: Prisma.SortOrder
   startDate?: Prisma.SortOrder
+  nextPaymentDate?: Prisma.SortOrder
   notes?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   reminderDays?: Prisma.SortOrder
@@ -571,6 +593,14 @@ export type DecimalFieldUpdateOperationsInput = {
   divide?: runtime.Decimal | runtime.DecimalJsLike | number | string
 }
 
+export type EnumCurrencyFieldUpdateOperationsInput = {
+  set?: $Enums.Currency
+}
+
+export type EnumBillingCycleFieldUpdateOperationsInput = {
+  set?: $Enums.BillingCycle
+}
+
 export type NullableStringFieldUpdateOperationsInput = {
   set?: string | null
 }
@@ -591,9 +621,10 @@ export type SubscriptionCreateWithoutUserInput = {
   id?: string
   name: string
   price: runtime.Decimal | runtime.DecimalJsLike | number | string
-  currency: string
-  billingCycle: string
+  currency?: $Enums.Currency
+  billingCycle?: $Enums.BillingCycle
   startDate: Date | string
+  nextPaymentDate: Date | string
   notes?: string | null
   isActive?: boolean
   reminderDays?: number
@@ -605,9 +636,10 @@ export type SubscriptionUncheckedCreateWithoutUserInput = {
   id?: string
   name: string
   price: runtime.Decimal | runtime.DecimalJsLike | number | string
-  currency: string
-  billingCycle: string
+  currency?: $Enums.Currency
+  billingCycle?: $Enums.BillingCycle
   startDate: Date | string
+  nextPaymentDate: Date | string
   notes?: string | null
   isActive?: boolean
   reminderDays?: number
@@ -648,9 +680,10 @@ export type SubscriptionScalarWhereInput = {
   id?: Prisma.StringFilter<"Subscription"> | string
   name?: Prisma.StringFilter<"Subscription"> | string
   price?: Prisma.DecimalFilter<"Subscription"> | runtime.Decimal | runtime.DecimalJsLike | number | string
-  currency?: Prisma.StringFilter<"Subscription"> | string
-  billingCycle?: Prisma.StringFilter<"Subscription"> | string
+  currency?: Prisma.EnumCurrencyFilter<"Subscription"> | $Enums.Currency
+  billingCycle?: Prisma.EnumBillingCycleFilter<"Subscription"> | $Enums.BillingCycle
   startDate?: Prisma.DateTimeFilter<"Subscription"> | Date | string
+  nextPaymentDate?: Prisma.DateTimeFilter<"Subscription"> | Date | string
   notes?: Prisma.StringNullableFilter<"Subscription"> | string | null
   isActive?: Prisma.BoolFilter<"Subscription"> | boolean
   reminderDays?: Prisma.IntFilter<"Subscription"> | number
@@ -663,9 +696,10 @@ export type SubscriptionCreateManyUserInput = {
   id?: string
   name: string
   price: runtime.Decimal | runtime.DecimalJsLike | number | string
-  currency: string
-  billingCycle: string
+  currency?: $Enums.Currency
+  billingCycle?: $Enums.BillingCycle
   startDate: Date | string
+  nextPaymentDate: Date | string
   notes?: string | null
   isActive?: boolean
   reminderDays?: number
@@ -677,9 +711,10 @@ export type SubscriptionUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  currency?: Prisma.StringFieldUpdateOperationsInput | string
-  billingCycle?: Prisma.StringFieldUpdateOperationsInput | string
+  currency?: Prisma.EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency
+  billingCycle?: Prisma.EnumBillingCycleFieldUpdateOperationsInput | $Enums.BillingCycle
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  nextPaymentDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   reminderDays?: Prisma.IntFieldUpdateOperationsInput | number
@@ -691,9 +726,10 @@ export type SubscriptionUncheckedUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  currency?: Prisma.StringFieldUpdateOperationsInput | string
-  billingCycle?: Prisma.StringFieldUpdateOperationsInput | string
+  currency?: Prisma.EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency
+  billingCycle?: Prisma.EnumBillingCycleFieldUpdateOperationsInput | $Enums.BillingCycle
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  nextPaymentDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   reminderDays?: Prisma.IntFieldUpdateOperationsInput | number
@@ -705,9 +741,10 @@ export type SubscriptionUncheckedUpdateManyWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  currency?: Prisma.StringFieldUpdateOperationsInput | string
-  billingCycle?: Prisma.StringFieldUpdateOperationsInput | string
+  currency?: Prisma.EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency
+  billingCycle?: Prisma.EnumBillingCycleFieldUpdateOperationsInput | $Enums.BillingCycle
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  nextPaymentDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   reminderDays?: Prisma.IntFieldUpdateOperationsInput | number
@@ -724,13 +761,14 @@ export type SubscriptionSelect<ExtArgs extends runtime.Types.Extensions.Internal
   currency?: boolean
   billingCycle?: boolean
   startDate?: boolean
+  nextPaymentDate?: boolean
   notes?: boolean
   isActive?: boolean
   reminderDays?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   userId?: boolean
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.AppUserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["subscription"]>
 
 export type SubscriptionSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -740,13 +778,14 @@ export type SubscriptionSelectCreateManyAndReturn<ExtArgs extends runtime.Types.
   currency?: boolean
   billingCycle?: boolean
   startDate?: boolean
+  nextPaymentDate?: boolean
   notes?: boolean
   isActive?: boolean
   reminderDays?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   userId?: boolean
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.AppUserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["subscription"]>
 
 export type SubscriptionSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -756,13 +795,14 @@ export type SubscriptionSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
   currency?: boolean
   billingCycle?: boolean
   startDate?: boolean
+  nextPaymentDate?: boolean
   notes?: boolean
   isActive?: boolean
   reminderDays?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   userId?: boolean
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.AppUserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["subscription"]>
 
 export type SubscriptionSelectScalar = {
@@ -772,6 +812,7 @@ export type SubscriptionSelectScalar = {
   currency?: boolean
   billingCycle?: boolean
   startDate?: boolean
+  nextPaymentDate?: boolean
   notes?: boolean
   isActive?: boolean
   reminderDays?: boolean
@@ -780,29 +821,30 @@ export type SubscriptionSelectScalar = {
   userId?: boolean
 }
 
-export type SubscriptionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "price" | "currency" | "billingCycle" | "startDate" | "notes" | "isActive" | "reminderDays" | "createdAt" | "updatedAt" | "userId", ExtArgs["result"]["subscription"]>
+export type SubscriptionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "price" | "currency" | "billingCycle" | "startDate" | "nextPaymentDate" | "notes" | "isActive" | "reminderDays" | "createdAt" | "updatedAt" | "userId", ExtArgs["result"]["subscription"]>
 export type SubscriptionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.AppUserDefaultArgs<ExtArgs>
 }
 export type SubscriptionIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.AppUserDefaultArgs<ExtArgs>
 }
 export type SubscriptionIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.AppUserDefaultArgs<ExtArgs>
 }
 
 export type $SubscriptionPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Subscription"
   objects: {
-    user: Prisma.$UserPayload<ExtArgs>
+    user: Prisma.$AppUserPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     name: string
     price: runtime.Decimal
-    currency: string
-    billingCycle: string
+    currency: $Enums.Currency
+    billingCycle: $Enums.BillingCycle
     startDate: Date
+    nextPaymentDate: Date
     notes: string | null
     isActive: boolean
     reminderDays: number
@@ -1203,7 +1245,7 @@ readonly fields: SubscriptionFieldRefs;
  */
 export interface Prisma__SubscriptionClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  user<T extends Prisma.AppUserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AppUserDefaultArgs<ExtArgs>>): Prisma.Prisma__AppUserClient<runtime.Types.Result.GetResult<Prisma.$AppUserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1236,9 +1278,10 @@ export interface SubscriptionFieldRefs {
   readonly id: Prisma.FieldRef<"Subscription", 'String'>
   readonly name: Prisma.FieldRef<"Subscription", 'String'>
   readonly price: Prisma.FieldRef<"Subscription", 'Decimal'>
-  readonly currency: Prisma.FieldRef<"Subscription", 'String'>
-  readonly billingCycle: Prisma.FieldRef<"Subscription", 'String'>
+  readonly currency: Prisma.FieldRef<"Subscription", 'Currency'>
+  readonly billingCycle: Prisma.FieldRef<"Subscription", 'BillingCycle'>
   readonly startDate: Prisma.FieldRef<"Subscription", 'DateTime'>
+  readonly nextPaymentDate: Prisma.FieldRef<"Subscription", 'DateTime'>
   readonly notes: Prisma.FieldRef<"Subscription", 'String'>
   readonly isActive: Prisma.FieldRef<"Subscription", 'Boolean'>
   readonly reminderDays: Prisma.FieldRef<"Subscription", 'Int'>
