@@ -5,7 +5,7 @@ import { registerAction, loginAction, logoutAction } from "@/actions/auth";
 export default function TestPage() {
   // Wrapper para ver la respuesta del servidor en la consola del navegador
   async function handleRegister(formData: FormData) {
-    const result = await registerAction(formData);
+    const result = await registerAction({ success: false }, formData);
     console.log("Respuesta Registro:", result);
     if (result.success) alert("✅ Registro Exitoso: " + result.message);
     else alert("❌ Error Registro: " + result.error);

@@ -18,7 +18,10 @@ export type ActionState = {
 // ----------------------------------------------------------------------
 // ACCIÓN: REGISTRO DE USUARIO
 // ----------------------------------------------------------------------
-export async function registerAction(formData: FormData): Promise<ActionState> {
+export async function registerAction(
+  prevState: ActionState,
+  formData: FormData
+): Promise<ActionState> {
   const data = Object.fromEntries(formData.entries());
 
   const validation = registerSchema.safeParse(data);
