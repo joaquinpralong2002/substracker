@@ -51,7 +51,7 @@ export const AnyNull = runtime.AnyNull
 
 
 export const ModelName = {
-  User: 'User',
+  AppUser: 'AppUser',
   Subscription: 'Subscription'
 } as const
 
@@ -71,7 +71,7 @@ export const TransactionIsolationLevel = {
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
 
-export const UserScalarFieldEnum = {
+export const AppUserScalarFieldEnum = {
   id: 'id',
   name: 'name',
   email: 'email',
@@ -80,7 +80,7 @@ export const UserScalarFieldEnum = {
   updatedAt: 'updatedAt'
 } as const
 
-export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+export type AppUserScalarFieldEnum = (typeof AppUserScalarFieldEnum)[keyof typeof AppUserScalarFieldEnum]
 
 
 export const SubscriptionScalarFieldEnum = {
@@ -90,6 +90,7 @@ export const SubscriptionScalarFieldEnum = {
   currency: 'currency',
   billingCycle: 'billingCycle',
   startDate: 'startDate',
+  nextPaymentDate: 'nextPaymentDate',
   notes: 'notes',
   isActive: 'isActive',
   reminderDays: 'reminderDays',

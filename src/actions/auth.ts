@@ -36,7 +36,7 @@ export async function registerAction(formData: FormData): Promise<ActionState> {
   const { name, email, password } = validation.data;
 
   try {
-    const existingUser = await prisma.user.findUnique({
+    const existingUser = await prisma.appUser.findUnique({
       where: { email },
     });
 
@@ -49,7 +49,7 @@ export async function registerAction(formData: FormData): Promise<ActionState> {
 
     const hashedPassword = await bcrypt.hash(password, 12);
 
-    await prisma.user.create({
+    await prisma.appUser.create({
       data: { name, email, password: hashedPassword },
     });
 
@@ -86,25 +86,22 @@ export async function loginAction(formData: FormData): Promise<ActionState> {
   const { email, password } = validation.data;
 
   try {
-    const user = await prisma.user.findUnique({ where: { email } });
+    const user = await prisma.appUser.findUnique({ where: { email } });
 
     if (!user || !(await bcrypt.compare(password, user.password))) {
       return { success: false, error: "Credenciales incorrectas." };
     }
 
-    const secret = new TextEncoder().encode(
-      process.env.JWT_SECRET || "secret-key-dev"
-    );
-    // const secret = process.env.JWT_SECRET;
+    const secret = new TextEncoder().encode(process.env.JWT_SECRET);
+
     if (!secret) throw new Error("JWT_SECRET no configurado.");
 
     const token = await new SignJWT({
       userId: user.id,
-      email: user.email,
     })
       .setProtectedHeader({ alg: "HS256" })
       .setIssuedAt()
-      .setExpirationTime("1h") // Expira en 1 hora
+      .setExpirationTime("7d") // Expira en 1 hora
       .sign(secret);
 
     const cookieStore = await cookies();
@@ -112,7 +109,7 @@ export async function loginAction(formData: FormData): Promise<ActionState> {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
-      maxAge: 60 * 60 * 24 * 7,
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 días
       path: "/",
     });
   } catch (error) {

@@ -20,7 +20,7 @@ const config: runtime.GetPrismaClientConfig = {
   "clientVersion": "7.1.0",
   "engineVersion": "ab635e6b9d606fa5c8fb8b1a7f909c3c3c1c98ba",
   "activeProvider": "postgresql",
-  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider = \"prisma-client\"\n  output   = \"../generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n}\n\n// Modelo basado en la pantalla \"Crea tu cuenta\"\nmodel User {\n  id       String @id @default(uuid())\n  name     String // Campo: \"Nombre completo\"\n  email    String @unique // Campo: \"Correo electrónico\"\n  password String // Campo: \"Contraseña\" (Se guardará hasheada)\n\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n\n  // Relación: Un usuario tiene muchas suscripciones\n  subscriptions Subscription[]\n}\n\n// Modelo basado en las pantallas \"Añadir una suscripción\" (Pasos 1 y 2)\nmodel Subscription {\n  id String @id @default(uuid())\n\n  // Datos principales (Paso 1 y 2 del diseño)\n  name         String // Campo: \"Nombre de la suscripción\" (ej. Netflix)\n  price        Decimal  @db.Decimal(10, 2) // Campo: \"Precio\" (ej. 14.99)\n  currency     String // Campo: \"Divisa\" (ej. USD, EUR - viene del dropdown)\n  billingCycle String // Campo: \"Ciclo de facturación\" (ej. Mensual - viene del dropdown)\n  startDate    DateTime // Campo: \"Fecha de primer pago\"\n\n  // Datos opcionales y lógica\n  notes    String? // Campo: \"Notas adicionales\" (El ? lo hace opcional)\n  isActive Boolean @default(true) // Para \"Soft Delete\" (cuando el usuario elimine)\n\n  // Campos técnicos (No visibles en UI, pero necesarios)\n  reminderDays Int      @default(3) // HU-12: Días previos para notificar (Por defecto 3)\n  createdAt    DateTime @default(now())\n  updatedAt    DateTime @updatedAt\n\n  // Relación con Usuario (Foreign Key)\n  userId String\n  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)\n}\n",
+  "inlineSchema": "generator client {\n  provider = \"prisma-client\"\n  output   = \"../src/generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n}\n\nmodel AppUser {\n  id       String @id @default(cuid())\n  name     String // Campo: \"Nombre completo\"\n  email    String @unique // Campo: \"Correo electrónico\"\n  password String // Campo: \"Contraseña\" (Se guardará hasheada)\n\n  createdAt DateTime @default(now()) @map(\"created_at\")\n  updatedAt DateTime @updatedAt @map(\"updated_at\")\n\n  // Relación: Un usuario tiene muchas suscripciones\n  subscriptions Subscription[]\n\n  @@map(\"users\")\n}\n\nmodel Subscription {\n  id String @id @default(cuid())\n\n  // Datos principales \n  name            String // Campo: \"Nombre de la suscripción\" (ej. Netflix)\n  price           Decimal      @db.Decimal(10, 2) // Campo: \"Precio\" (ej. 14.99)\n  currency        Currency     @default(USD) // Campo: \"Divisa\" (ej. USD, EUR - viene del dropdown)\n  billingCycle    BillingCycle @default(Mensual) @map(\"billing_cycle\") // Campo: \"Ciclo de facturación\" (ej. Mensual - viene del dropdown)\n  startDate       DateTime     @map(\"start_date\") // Campo: \"Fecha de primer pago\" \n  nextPaymentDate DateTime     @map(\"next_payment_date\") // Campo: \"Fecha de próximo pago\"\n\n  // Datos opcionales y lógica\n  notes    String? // Campo: \"Notas adicionales\"\n  isActive Boolean @default(true) @map(\"is_active\") // Para \"Soft Delete\" (cuando el usuario elimine)\n\n  // Campos técnicos (No visibles en UI, pero necesarios)\n  reminderDays Int      @default(7) @map(\"reminder_days\") // HU-12: Días previos para notificar (Por defecto 7)\n  createdAt    DateTime @default(now()) @map(\"created_at\")\n  updatedAt    DateTime @updatedAt @map(\"updated_at\")\n\n  // Relación con Usuario (Foreign Key)\n  userId String  @map(\"user_id\")\n  user   AppUser @relation(fields: [userId], references: [id], onDelete: Cascade)\n\n  @@index([userId])\n  @@index([nextPaymentDate])\n  @@map(\"subscriptions\")\n}\n\nenum Currency {\n  USD\n  EUR\n  GBP\n  JPY\n  AUD\n  CAD\n  CHF\n  CNY\n  SEK\n  NZD\n  ARS\n\n  @@map(\"currencies\")\n}\n\nenum BillingCycle {\n  Mensual\n  Trimestral\n  Semestral\n  Anual\n\n  @@map(\"billing_cycles\")\n}\n",
   "runtimeDataModel": {
     "models": {},
     "enums": {},
@@ -28,7 +28,7 @@ const config: runtime.GetPrismaClientConfig = {
   }
 }
 
-config.runtimeDataModel = JSON.parse("{\"models\":{\"User\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"password\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"subscriptions\",\"kind\":\"object\",\"type\":\"Subscription\",\"relationName\":\"SubscriptionToUser\"}],\"dbName\":null},\"Subscription\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"price\",\"kind\":\"scalar\",\"type\":\"Decimal\"},{\"name\":\"currency\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"billingCycle\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"startDate\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"notes\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"isActive\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"reminderDays\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"SubscriptionToUser\"}],\"dbName\":null}},\"enums\":{},\"types\":{}}")
+config.runtimeDataModel = JSON.parse("{\"models\":{\"AppUser\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"password\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"created_at\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"updated_at\"},{\"name\":\"subscriptions\",\"kind\":\"object\",\"type\":\"Subscription\",\"relationName\":\"AppUserToSubscription\"}],\"dbName\":\"users\"},\"Subscription\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"price\",\"kind\":\"scalar\",\"type\":\"Decimal\"},{\"name\":\"currency\",\"kind\":\"enum\",\"type\":\"Currency\"},{\"name\":\"billingCycle\",\"kind\":\"enum\",\"type\":\"BillingCycle\",\"dbName\":\"billing_cycle\"},{\"name\":\"startDate\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"start_date\"},{\"name\":\"nextPaymentDate\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"next_payment_date\"},{\"name\":\"notes\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"isActive\",\"kind\":\"scalar\",\"type\":\"Boolean\",\"dbName\":\"is_active\"},{\"name\":\"reminderDays\",\"kind\":\"scalar\",\"type\":\"Int\",\"dbName\":\"reminder_days\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"created_at\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"updated_at\"},{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"String\",\"dbName\":\"user_id\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"AppUser\",\"relationName\":\"AppUserToSubscription\"}],\"dbName\":\"subscriptions\"}},\"enums\":{},\"types\":{}}")
 
 async function decodeBase64AsWasm(wasmBase64: string): Promise<WebAssembly.Module> {
   const { Buffer } = await import('node:buffer')
@@ -58,8 +58,8 @@ export interface PrismaClientConstructor {
    * @example
    * ```
    * const prisma = new PrismaClient()
-   * // Fetch zero or more Users
-   * const users = await prisma.user.findMany()
+   * // Fetch zero or more AppUsers
+   * const appUsers = await prisma.appUser.findMany()
    * ```
    * 
    * Read more in our [docs](https://pris.ly/d/client).
@@ -80,8 +80,8 @@ export interface PrismaClientConstructor {
  * @example
  * ```
  * const prisma = new PrismaClient()
- * // Fetch zero or more Users
- * const users = await prisma.user.findMany()
+ * // Fetch zero or more AppUsers
+ * const appUsers = await prisma.appUser.findMany()
  * ```
  * 
  * Read more in our [docs](https://pris.ly/d/client).
@@ -175,14 +175,14 @@ export interface PrismaClient<
   }>>
 
       /**
-   * `prisma.user`: Exposes CRUD operations for the **User** model.
+   * `prisma.appUser`: Exposes CRUD operations for the **AppUser** model.
     * Example usage:
     * ```ts
-    * // Fetch zero or more Users
-    * const users = await prisma.user.findMany()
+    * // Fetch zero or more AppUsers
+    * const appUsers = await prisma.appUser.findMany()
     * ```
     */
-  get user(): Prisma.UserDelegate<ExtArgs, { omit: OmitOpts }>;
+  get appUser(): Prisma.AppUserDelegate<ExtArgs, { omit: OmitOpts }>;
 
   /**
    * `prisma.subscription`: Exposes CRUD operations for the **Subscription** model.
