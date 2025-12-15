@@ -68,7 +68,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
 
         {/* Mensaje de Error */}
         {errorMessage && (
-          <p className="text-xs text-red-300 ml-2 font-medium animate-pulse">
+          <p className="text-xs text-red-300 ml-2 font-medium">
             {errorMessage}
           </p>
         )}

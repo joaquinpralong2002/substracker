@@ -18,7 +18,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         disabled={isLoading || disabled}
         className={cn(
           // 1. Base: Dimensiones y Comportamiento
-          "w-full md:w-48 md:mx-auto h-12 flex items-center justify-center gap-2",
+          "w-full md:w-1/2 md:mx-auto h-12 flex items-center justify-center gap-2",
           "rounded-2xl",
           "font-bold text-base transition-all duration-200",
           "active:scale-105", // Efecto de "presionar" sutil
