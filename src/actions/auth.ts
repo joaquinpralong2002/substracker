@@ -13,6 +13,10 @@ export type ActionState = {
   message?: string;
   error?: string;
   fieldErrors?: Record<string, string[]>;
+  inputs?: {
+    name?: string;
+    email?: string;
+  };
 };
 
 // ----------------------------------------------------------------------
@@ -33,6 +37,10 @@ export async function registerAction(
       success: false,
       error: "Error de validación en los campos.",
       fieldErrors: flattened.fieldErrors,
+      inputs: {
+        name: data.name as string,
+        email: data.email as string,
+      },
     };
   }
 
@@ -47,6 +55,7 @@ export async function registerAction(
       return {
         success: false,
         error: "Este correo electrónico ya está en uso.",
+        inputs: { name, email },
       };
     }
 
@@ -65,6 +74,7 @@ export async function registerAction(
     return {
       success: false,
       error: "Hubo un error interno al crear la cuenta.",
+      inputs: { name, email },
     };
   }
 }

@@ -1,3 +1,4 @@
+import { error } from "console";
 import { z } from "zod";
 
 // ----------------------------------------------------------------------
@@ -12,7 +13,7 @@ export const registerSchema = z
       .min(5, "El nombre completo debe tener al menos 5 caracteres")
       .max(100, "El nombre es demasiado largo")
       .refine((val) => val.includes(" "), {
-        error: "Por favor, ingresa tu nombre y apellido",
+        error: "Debes ingresar tu nombre y apellido",
       })
       .refine((val) => val.split(" ").length >= 2, {
         message: "Ingresa al menos nombre y apellido",
@@ -21,11 +22,17 @@ export const registerSchema = z
         message: "El nombre no puede contener espacios múltiples",
       }),
 
-    email: z.email().trim().toLowerCase(),
+    email: z
+      .email({ error: "El correo electrónico ingresado es inválido" })
+      .trim()
+      .toLowerCase(),
 
     password: z
       .string()
-      .min(8, { error: "La contraseña debe tener al menos 8 caracteres" })
+      .min(8, {
+        error:
+          "La contraseña debe tener al menos 8 caracteres, y contener al menos un número y un carácter especial",
+      })
       .max(100, { error: "La contraseña es demasiado larga" })
       .regex(/[0-9]/, { error: "Debe contener al menos un número" })
       .regex(/[!@#$%^&*]/, {
