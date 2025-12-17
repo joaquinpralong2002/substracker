@@ -2,10 +2,12 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { jwtVerify } from "jose";
 
-// Rutas protegidas (Usuario debe estar logueado)
+//TODO: Cambiar enfoque de middleware para usar el de la documentación oficial de Next.js
+
+// Rutas protegidas
 const protectedRoutes = ["/dashboard", "/perfil"];
 
-// Rutas de autenticación (Usuario NO debe estar logueado)
+// Rutas de autenticación (
 const authRoutes = ["/login", "/registro"];
 
 export async function middleware(request: NextRequest) {
