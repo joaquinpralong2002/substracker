@@ -12,7 +12,7 @@ export default function TestPage() {
   }
 
   async function handleLogin(formData: FormData) {
-    const result = await loginAction(formData);
+    const result = await loginAction({ success: false }, formData);
     console.log("Respuesta Login:", result);
     if (!result?.success && result?.error)
       alert("❌ Error Login: " + result.error);
