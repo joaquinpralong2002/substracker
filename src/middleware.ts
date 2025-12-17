@@ -8,7 +8,7 @@ import { jwtVerify } from "jose";
 const protectedRoutes = ["/dashboard", "/perfil"];
 
 // Rutas de autenticación (
-const authRoutes = ["/login", "/registro"];
+const authRoutes = ["/iniciar-sesion", "/registro"];
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -39,7 +39,7 @@ export async function middleware(request: NextRequest) {
   if (protectedRoutes.some((route) => pathname.startsWith(route))) {
     if (!isAuthenticated) {
       const url = request.nextUrl.clone();
-      url.pathname = "/login"; // Redirigir al login
+      url.pathname = "/iniciar-sesion"; // Redirigir al login
 
       const response = NextResponse.redirect(url);
 
