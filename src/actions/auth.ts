@@ -82,7 +82,10 @@ export async function registerAction(
 // ----------------------------------------------------------------------
 // ACCIÓN: INICIO DE SESIÓN
 // ----------------------------------------------------------------------
-export async function loginAction(formData: FormData): Promise<ActionState> {
+export async function loginAction(
+  prevState: ActionState,
+  formData: FormData
+): Promise<ActionState> {
   const data = Object.fromEntries(formData.entries());
 
   const validation = loginSchema.safeParse(data);
@@ -93,6 +96,9 @@ export async function loginAction(formData: FormData): Promise<ActionState> {
       success: false,
       error: "Credenciales inválidas.",
       fieldErrors: flattened.fieldErrors,
+      inputs: {
+        email: data.email as string,
+      },
     };
   }
 
