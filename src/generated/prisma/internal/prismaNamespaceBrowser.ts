@@ -91,6 +91,7 @@ export const SubscriptionScalarFieldEnum = {
   billingCycle: 'billingCycle',
   startDate: 'startDate',
   nextPaymentDate: 'nextPaymentDate',
+  color: 'color',
   notes: 'notes',
   isActive: 'isActive',
   reminderDays: 'reminderDays',

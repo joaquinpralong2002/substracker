@@ -8,12 +8,3 @@
   --color-background: #f3e9d2;
   --color-danger: #b91c1c;
 }
-
-@layer base {
-  * {
-    @apply border-gray-200 outline-gray-500/50;
-  }
-  body {
-    @apply bg-brand-pale text-brand-dark;
-  }
-}
