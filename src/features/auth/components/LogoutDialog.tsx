@@ -12,7 +12,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
+} from "@/components/ui/shadcn/alert-dialog";
 
 interface LogoutDialogProps {
   trigger: ReactNode;

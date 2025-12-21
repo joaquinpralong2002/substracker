@@ -1,6 +1,6 @@
 "use client";
 
-import { useForm, useWatch, type Resolver } from "react-hook-form";
+import { useForm, useWatch, type Resolver, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   subscriptionSchema,
@@ -12,8 +12,15 @@ import {
 
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/FormButton"; // Asumo que es tu componente de botón
-import { Select } from "@/components/ui/Select";
-import { Calendar, Check } from "lucide-react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/shadcn/select";
+import { DatePicker } from "@/components/ui/DatePicker";
+import { Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export function SubscriptionForm() {
@@ -61,28 +68,85 @@ export function SubscriptionForm() {
           {...register("price")}
           error={errors.price?.message}
         />
-        <Select
-          label="*Divisa:"
-          options={[...CURRENCIES]}
-          {...register("currency")}
-          error={errors.currency?.message}
-        />
+        <div className="space-y-1">
+          <label className="block text-base font-bold text-white ml-1">
+            *Divisa:
+          </label>
+          <Controller
+            name="currency"
+            control={control}
+            render={({ field }) => (
+              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <SelectTrigger
+                  className={cn(errors.currency ? "ring-2 ring-red-500" : "")}
+                >
+                  <SelectValue placeholder="Seleccionar" />
+                </SelectTrigger>
+                <SelectContent>
+                  {CURRENCIES.map((curr) => (
+                    <SelectItem key={curr} value={curr}>
+                      {curr}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            )}
+          />
+          {errors.currency && (
+            <p className="text-xs text-red-300 ml-2 font-medium">
+              {errors.currency.message}
+            </p>
+          )}
+        </div>
       </div>
 
       {/* Fila con Ciclo y Fecha */}
       <div className="grid grid-cols-2 gap-4">
-        <Select
-          label="*Ciclo de facturación:"
-          options={[...BILLING_CYCLES]}
-          {...register("billingCycle")}
-          error={errors.billingCycle?.message}
-        />
-        <Input
-          label="*Fecha de primer pago:"
-          type="date"
-          icon={<Calendar size={20} />}
-          {...register("startDate")}
-          error={errors.startDate?.message}
+        <div className="space-y-1">
+          <label className="block text-base font-bold text-white ml-1">
+            *Ciclo de facturación:
+          </label>
+          <Controller
+            name="billingCycle"
+            control={control}
+            render={({ field }) => (
+              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <SelectTrigger
+                  className={cn(
+                    errors.billingCycle ? "ring-2 ring-red-500" : ""
+                  )}
+                >
+                  <SelectValue placeholder="Seleccionar" />
+                </SelectTrigger>
+                <SelectContent>
+                  {BILLING_CYCLES.map((cycle) => (
+                    <SelectItem key={cycle} value={cycle}>
+                      {cycle}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            )}
+          />
+          {errors.billingCycle && (
+            <p className="text-xs text-red-300 ml-2 font-medium">
+              {errors.billingCycle.message}
+            </p>
+          )}
+        </div>
+        <Controller
+          name="startDate"
+          control={control}
+          render={({ field }) => (
+            <DatePicker
+              label="*Fecha de primer pago:"
+              date={field.value ? new Date(field.value) : undefined}
+              onChange={(date) => {
+                field.onChange(date ? date.toISOString().split("T")[0] : "");
+              }}
+              error={errors.startDate?.message}
+            />
+          )}
         />
       </div>
 

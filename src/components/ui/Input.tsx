@@ -31,7 +31,8 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             type={type}
             className={cn(
               // 1. Dimensiones y Espaciado
-              "w-full h-11 pl-5 pr-12", // Altura generosa y espacio a la derecha para el icono
+              "w-full h-11 pl-5", // Altura generosa
+              icon ? "pr-12" : "pr-5", // Espacio a la derecha condicional
 
               // 2. Forma
               "rounded-2xl", // Bordes redondeados
