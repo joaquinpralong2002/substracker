@@ -6,16 +6,22 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   error?: string | string[]; // Soporta errores de Zod
   icon?: ReactNode; // Icono de Lucide (User, Mail, Eye)
   onIconClick?: () => void; // Para el toggle de contraseña
+  labelClassName?: string; // Clase opcional para el label
 }
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
-  ({ className, label, error, icon, onIconClick, type, ...props }, ref) => {
+  ({ className, label, error, icon, onIconClick, type, labelClassName, ...props }, ref) => {
     // Si el error es un array, tomamos el primer mensaje
     const errorMessage = Array.isArray(error) ? error[0] : error;
 
     return (
       <div className="w-full space-y-1">
-        <label className="block text-base font-bold text-white ml-1">
+        <label
+          className={cn(
+            "block text-base font-bold text-white ml-1",
+            labelClassName
+          )}
+        >
           {label}
         </label>
 

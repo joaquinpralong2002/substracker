@@ -31,7 +31,8 @@ model Subscription {
   currency     Currency @default(USD)  // Campo: "Divisa" (ej. USD, EUR - viene del dropdown)
   billingCycle BillingCycle @default(Mensual) @map("billing_cycle")  // Campo: "Ciclo de facturación" (ej. Mensual - viene del dropdown)
   startDate    DateTime @map("start_date") // Campo: "Fecha de primer pago" 
-  nextPaymentDate DateTime @map("next_payment_date") // Campo: "Fecha de próximo pago"
+  nextPaymentDate DateTime? @map("next_payment_date") // Campo: "Fecha de próximo pago", Opcional ya que si el ciclo es "Unico", no hay próxima fecha de pago.
+  color        String?  @default("#1A936F") // Campo "Color" Para mostrar el icono rojo de Netflix o verde de Spotify
   
   // Datos opcionales y lógica
   notes        String?  // Campo: "Notas adicionales"
@@ -71,5 +72,6 @@ enum BillingCycle{
   Trimestral
   Semestral
   Anual
+  Unico
   @@map("billing_cycles")
 }

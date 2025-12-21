@@ -3,7 +3,7 @@
 import { useActionState, useState } from "react";
 import { registerAction } from "@/actions/auth";
 import { Input } from "@/components/ui/Input";
-import { Button } from "@/components/ui/Button";
+import { Button } from "@/components/ui/FormButton";
 import { User, Mail, Eye, EyeOff } from "lucide-react";
 
 const initialState = {

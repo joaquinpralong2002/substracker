@@ -1,17 +1,22 @@
+"use client";
+
+import { useState } from "react";
 import {
   Wallet,
   ListChecks,
   CalendarDays,
-  TrendingUp,
   ArrowUp,
   Clock,
   Search,
   Plus,
 } from "lucide-react";
+import { AddSubscriptionModal } from "@/features/subscriptions/components/AddSubscriptionModal";
 
 export default function DashboardPage() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   return (
-    <div className="max-w-6xl mx-auto space-y-8">
+    <div className="max-w-6xl mx-auto space-y-8 relative">
       {/* 1. HEADER: Saludo */}
       <div>
         <h1 className="text-2xl md:text-3xl font-bold text-brand-dark">
@@ -96,7 +101,10 @@ export default function DashboardPage() {
             </div>
 
             {/* Botón Añadir (Solo Desktop) */}
-            <button className="hidden md:flex items-center gap-2 bg-brand-primary text-white px-4 py-2 rounded-xl font-bold hover:brightness-110 transition-all shadow-md">
+            <button
+              onClick={() => setIsModalOpen(true)}
+              className="hidden md:flex items-center gap-2 bg-brand-primary text-white px-4 py-2 rounded-xl font-bold hover:brightness-110 transition-all shadow-md"
+            >
               <Plus size={20} />
               Añadir suscripción
             </button>
@@ -110,9 +118,19 @@ export default function DashboardPage() {
       </div>
 
       {/* 4. FAB (Floating Action Button) - Solo Mobile */}
-      <button className="md:hidden fixed bottom-6 right-6 w-14 h-14 bg-brand-primary text-white rounded-full shadow-xl flex items-center justify-center hover:scale-110 transition-transform z-50">
+      <button
+        onClick={() => setIsModalOpen(true)}
+        className="md:hidden fixed bottom-6 right-6 w-14 h-14 bg-brand-primary text-white rounded-full shadow-xl flex items-center justify-center hover:scale-110 transition-transform z-50"
+      >
         <Plus size={32} />
       </button>
+
+      {/* 5. MODAL DE AÑADIR SUSCRIPCIÓN */}
+      {isModalOpen && (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-[100] p-4 animate-in fade-in duration-200">
+          <AddSubscriptionModal onClose={() => setIsModalOpen(false)} />
+        </div>
+      )}
     </div>
   );
 }

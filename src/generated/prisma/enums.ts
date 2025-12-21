@@ -30,7 +30,8 @@ export const BillingCycle = {
   Mensual: 'Mensual',
   Trimestral: 'Trimestral',
   Semestral: 'Semestral',
-  Anual: 'Anual'
+  Anual: 'Anual',
+  Unico: 'Unico'
 } as const
 
 export type BillingCycle = (typeof BillingCycle)[keyof typeof BillingCycle]

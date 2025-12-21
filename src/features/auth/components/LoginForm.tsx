@@ -3,7 +3,7 @@
 import { useActionState, useState } from "react";
 import { loginAction } from "@/actions/auth";
 import { Input } from "@/components/ui/Input";
-import { Button } from "@/components/ui/Button";
+import { Button } from "@/components/ui/FormButton";
 import { Mail, Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
 
