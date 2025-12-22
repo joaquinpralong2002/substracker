@@ -1,7 +1,9 @@
 "use client";
 
+import { useState } from "react";
 import { useForm, useWatch, type Resolver, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { createSubscriptionAction } from "@/actions/subscription";
 import {
   subscriptionSchema,
   SubscriptionFormValues,
@@ -23,7 +25,14 @@ import { DatePicker } from "@/components/ui/DatePicker";
 import { Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-export function SubscriptionForm() {
+// Prop para cerrar modal al terminar
+interface SubscriptionFormProps {
+  onSuccess?: () => void;
+}
+
+export function SubscriptionForm({ onSuccess }: SubscriptionFormProps) {
+  const [serverError, setServerError] = useState(""); // Estado para error global
+
   const {
     register,
     control,
@@ -45,8 +54,27 @@ export function SubscriptionForm() {
   const selectedColor = useWatch({ control, name: "color" });
 
   const onSubmit = async (data: SubscriptionFormValues) => {
-    console.log("Datos del formulario:", data);
-    // TODO: Server Action
+    setServerError(""); // Limpiar errores previos
+
+    // Convertimos los datos a FormData para que coincida con la firma de la Action
+    const formData = new FormData();
+    Object.entries(data).forEach(([key, value]) => {
+      if (value !== undefined && value !== null) {
+        formData.append(key, value.toString());
+      }
+    });
+
+    // Llamada al Server Action pasando un estado inicial dummy y el FormData
+    const result = await createSubscriptionAction({ success: false }, formData);
+
+    if (result.success) {
+      // Si todo salió bien:
+      if (onSuccess) onSuccess(); // Cerramos el modal
+      // Opcional: Mostrar Toast de éxito aquí
+    } else {
+      // Si hubo error:
+      setServerError(result.error || "Ocurrió un error inesperado");
+    }
   };
 
   // Clase auxiliar para los labels: Oscuro en Mobile, Blanco en Desktop
@@ -55,6 +83,13 @@ export function SubscriptionForm() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-5 pb-6">
+      {/* Mostrar error del servidor si existe */}
+      {serverError && (
+        <div className="bg-red-500/10 border border-red-500 text-red-600 p-3 rounded-xl text-sm font-medium text-center">
+          {serverError}
+        </div>
+      )}
+
       <div className="space-y-1">
         <Input
           label="*Nombre de la suscripción:"
