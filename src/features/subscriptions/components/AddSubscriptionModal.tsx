@@ -47,7 +47,7 @@ export function AddSubscriptionModal({ onClose }: AddSubscriptionModalProps) {
       </div>
 
       {/* EL FORMULARIO (Se adapta por dentro) */}
-      <SubscriptionForm />
+      <SubscriptionForm onSuccess={onClose} />
     </div>
   );
 }

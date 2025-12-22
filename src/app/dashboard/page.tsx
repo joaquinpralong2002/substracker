@@ -11,6 +11,7 @@ import {
   Plus,
 } from "lucide-react";
 import { AddSubscriptionModal } from "@/features/subscriptions/components/AddSubscriptionModal";
+import { SubscriptionList } from "@/features/dashboard/components/SubscriptionList";
 
 export default function DashboardPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -24,7 +25,7 @@ export default function DashboardPage() {
         </h1>
       </div>
 
-      {/* 2. KPI CARDS (Resumen) */}
+      {/* 2. KPI CARDS */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
         {/* Card 1: Gasto Mensual */}
         <div className="bg-brand-primary rounded-[24px] p-6 text-white shadow-lg shadow-brand-primary/20 relative overflow-hidden">
@@ -78,7 +79,7 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      {/* 3. LISTA DE SUSCRIPCIONES (Contenedor Verde Claro) */}
+      {/* 3. LISTA DE SUSCRIPCIONES */}
       <div className="bg-brand-light/30 border border-brand-primary/20 rounded-[32px] p-6 min-h-[400px]">
         {/* Header de la Lista (Buscador + Botón) */}
         <div className="flex flex-col md:flex-row justify-between items-center gap-4 mb-6">
@@ -111,10 +112,8 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        {/* Placeholder de la lista (Aquí irán los items luego) */}
-        <div className="flex flex-col items-center justify-center h-64 text-brand-dark/40 text-center">
-          <p>Aquí aparecerá tu lista de suscripciones...</p>
-        </div>
+        {/* Lista de suscripciones */}
+        <SubscriptionList />
       </div>
 
       {/* 4. FAB (Floating Action Button) - Solo Mobile */}
