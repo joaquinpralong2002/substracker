@@ -11,7 +11,7 @@ import {
 } from "@/lib/schemas/subscription";
 
 import { Input } from "@/components/ui/Input";
-import { Button } from "@/components/ui/FormButton"; // Asumo que es tu componente de botón
+import { Button } from "@/components/ui/FormButton";
 import {
   Select,
   SelectContent,
@@ -46,39 +46,51 @@ export function SubscriptionForm() {
 
   const onSubmit = async (data: SubscriptionFormValues) => {
     console.log("Datos del formulario:", data);
-    // TODO: Conectar con el Server Action para crear la suscripción
+    // TODO: Server Action
   };
 
+  // Clase auxiliar para los labels: Oscuro en Mobile, Blanco en Desktop
+  const labelClass =
+    "block text-base font-bold text-brand-dark md:text-white ml-1";
+
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-      <Input
-        label="*Nombre de la suscripción:"
-        placeholder="Ej: Netflix, Spotify..."
-        {...register("name")}
-        error={errors.name?.message}
-      />
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-5 pb-6">
+      <div className="space-y-1">
+        <Input
+          label="*Nombre de la suscripción:"
+          placeholder="Ej: Netflix, Spotify..."
+          {...register("name")}
+          error={errors.name?.message}
+          labelClassName={labelClass}
+        />
+      </div>
 
       {/* Fila con Precio y Divisa */}
       <div className="grid grid-cols-2 gap-4">
-        <Input
-          label="*Precio:"
-          type="number"
-          step="0.01"
-          placeholder="14.99"
-          {...register("price")}
-          error={errors.price?.message}
-        />
         <div className="space-y-1">
-          <label className="block text-base font-bold text-white ml-1">
-            *Divisa:
-          </label>
+          <Input
+            label="*Precio:"
+            type="number"
+            step="0.01"
+            placeholder="14.99"
+            {...register("price")}
+            error={errors.price?.message}
+            labelClassName={labelClass}
+          />
+        </div>
+
+        <div className="space-y-1">
+          <label className={labelClass}>*Divisa:</label>
           <Controller
             name="currency"
             control={control}
             render={({ field }) => (
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <SelectTrigger
-                  className={cn(errors.currency ? "ring-2 ring-red-500" : "")}
+                  className={cn(
+                    "h-11 rounded-2xl bg-brand-pale border-none text-brand-dark font-medium focus:ring-2 focus:ring-brand-light",
+                    errors.currency ? "ring-2 ring-red-500" : ""
+                  )}
                 >
                   <SelectValue placeholder="Seleccionar" />
                 </SelectTrigger>
@@ -101,11 +113,9 @@ export function SubscriptionForm() {
       </div>
 
       {/* Fila con Ciclo y Fecha */}
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="space-y-1">
-          <label className="block text-base font-bold text-white ml-1">
-            *Ciclo de facturación:
-          </label>
+          <label className={labelClass}>*Ciclo de facturación:</label>
           <Controller
             name="billingCycle"
             control={control}
@@ -113,6 +123,7 @@ export function SubscriptionForm() {
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <SelectTrigger
                   className={cn(
+                    "h-11 rounded-2xl bg-brand-pale border-none text-brand-dark font-medium focus:ring-2 focus:ring-brand-light",
                     errors.billingCycle ? "ring-2 ring-red-500" : ""
                   )}
                 >
@@ -134,27 +145,30 @@ export function SubscriptionForm() {
             </p>
           )}
         </div>
-        <Controller
-          name="startDate"
-          control={control}
-          render={({ field }) => (
-            <DatePicker
-              label="*Fecha de primer pago:"
-              date={field.value ? new Date(field.value) : undefined}
-              onChange={(date) => {
-                field.onChange(date ? date.toISOString().split("T")[0] : "");
-              }}
-              error={errors.startDate?.message}
-            />
-          )}
-        />
+
+        <div className="space-y-1">
+          {/* El DatePicker debe manejar su label internamente o externamente. 
+               Asumiremos control externo para consistencia de color */}
+          <label className={labelClass}>*Fecha de primer pago:</label>
+          <Controller
+            name="startDate"
+            control={control}
+            render={({ field }) => (
+              <DatePicker
+                date={field.value ? new Date(field.value) : undefined}
+                onChange={(date) => {
+                  field.onChange(date ? date.toISOString().split("T")[0] : "");
+                }}
+                error={errors.startDate?.message}
+              />
+            )}
+          />
+        </div>
       </div>
 
       {/* Selector de Color */}
       <div className="space-y-2">
-        <label className="block text-base font-bold text-white ml-1">
-          Color de etiqueta:
-        </label>
+        <label className={labelClass}>Color de etiqueta:</label>
         <div className="flex flex-wrap gap-3 justify-center bg-brand-pale/50 p-4 rounded-2xl border border-brand-dark/5">
           {COLORS.map((color) => (
             <button
@@ -164,7 +178,7 @@ export function SubscriptionForm() {
               className={cn(
                 "w-8 h-8 rounded-full transition-all flex items-center justify-center shadow-sm",
                 selectedColor === color
-                  ? "scale-110 ring-2 ring-white ring-offset-2 ring-offset-brand-primary"
+                  ? "scale-110 ring-2 ring-brand-dark md:ring-white ring-offset-2 ring-offset-brand-pale md:ring-offset-brand-primary"
                   : "hover:scale-105 hover:opacity-80"
               )}
               style={{ backgroundColor: color }}
@@ -180,9 +194,7 @@ export function SubscriptionForm() {
 
       {/* Notas Adicionales */}
       <div className="space-y-1">
-        <label className="block text-base font-bold text-white ml-1">
-          Notas adicionales:
-        </label>
+        <label className={labelClass}>Notas adicionales:</label>
         <textarea
           className={cn(
             "w-full h-24 p-4 rounded-2xl bg-brand-pale text-brand-dark font-medium placeholder:text-brand-dark/60",
@@ -205,8 +217,7 @@ export function SubscriptionForm() {
         <Button
           type="submit"
           isLoading={isSubmitting}
-          // Aplicamos los estilos del Figma directamente
-          className="bg-brand-light text-brand-dark hover:brightness-105 w-full md:w-auto px-3 py-3"
+          className="bg-brand-primary md:bg-brand-light text-white md:text-brand-dark hover:brightness-105 w-full md:w-auto px-8 py-3 rounded-2xl font-bold shadow-lg"
         >
           Añadir suscripción
         </Button>

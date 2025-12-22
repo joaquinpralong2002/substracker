@@ -1,28 +1,52 @@
 import { SubscriptionForm } from "./SubscriptionForm";
 import { X } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface AddSubscriptionModalProps {
-  onClose: () => void; // Función para cerrar el modal
+  onClose: () => void;
 }
 
 export function AddSubscriptionModal({ onClose }: AddSubscriptionModalProps) {
   return (
-    // Contenedor principal del modal (fondo verde)
-    <div className="bg-brand-primary p-8 rounded-4xl w-full max-w-xl relative shadow-2xl">
-      {/* Botón de Cerrar */}
-      <button
-        onClick={onClose}
-        className="absolute top-4 right-4 w-8 h-8 rounded-full bg-brand-dark/50 hover:bg-brand-dark transition-colors flex items-center justify-center text-white"
-      >
-        <X size={20} />
-      </button>
+    // CONTENEDOR RESPONSIVO:
+    // Mobile: fixed inset-0 (pantalla completa), bg-background (beige), scrollable
+    // Desktop (md): relative, max-w-xl, bg-brand-primary (verde), rounded-4xl
+    <div
+      className={cn(
+        "fixed inset-0 z-50 flex flex-col overflow-y-auto bg-background p-6", // Estilos Mobile
+        "md:relative md:inset-auto md:block md:bg-brand-primary md:p-8 md:rounded-4xl md:w-full md:max-w-xl md:shadow-2xl md:overflow-visible" // Estilos Desktop
+      )}
+    >
+      {/* HEADER */}
+      <div className="flex items-center justify-between mb-8 md:justify-center md:relative">
+        {/* Botón Cerrar (Mobile: Izquierda/Derecha según prefieras, Desktop: Absolute Right) */}
+        <button
+          onClick={onClose}
+          className={cn(
+            "flex items-center justify-center w-10 h-10 rounded-full transition-colors",
+            "bg-brand-dark text-white", // Mobile: Botón oscuro
+            "md:absolute md:-top-2 md:-right-2 md:bg-brand-dark/50 md:hover:bg-brand-dark" // Desktop: Posición absoluta
+          )}
+        >
+          <X size={24} />
+        </button>
 
-      {/* Header */}
-      <h2 className="text-2xl font-bold text-white text-center mb-8">
-        Añadir una suscripción
-      </h2>
+        {/* Título */}
+        <h2
+          className={cn(
+            "text-2xl font-bold text-center flex-1 md:flex-none",
+            "text-brand-dark", // Mobile: Texto oscuro
+            "md:text-white" // Desktop: Texto blanco
+          )}
+        >
+          Añadir una suscripción
+        </h2>
 
-      {/* El Formulario */}
+        {/* Espaciador para centrar título en mobile si el botón está a la izquierda */}
+        <div className="w-10 md:hidden"></div>
+      </div>
+
+      {/* EL FORMULARIO (Se adapta por dentro) */}
       <SubscriptionForm />
     </div>
   );

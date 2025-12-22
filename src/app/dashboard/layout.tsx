@@ -50,7 +50,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
       <header className="md:hidden h-16 bg-brand-dark text-white flex items-center justify-between px-4 sticky top-0 z-50 shadow-md">
         <div className="flex items-center gap-2">
           <div className="w-8 h-8 bg-brand-primary/20 rounded-full flex items-center justify-center border border-brand-light/30">
-            <LayoutDashboard className="text-brand-light w-5 h-5" />
+            <SubscriptionLogo />
           </div>
           <span className="font-bold text-lg">SubsTracker</span>
         </div>
